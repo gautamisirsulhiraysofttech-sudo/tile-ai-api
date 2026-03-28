@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import time
 
 app = Flask(__name__)
 
@@ -9,19 +8,14 @@ def home():
 
 @app.route('/detect', methods=['POST'])
 def detect():
-    try:
-        file = request.files['image']
-        
-        # simulate processing delay safe
-        time.sleep(1)
 
-        return jsonify({
-            "status": "success",
-            "msg": "image received"
-        })
+    if 'image' not in request.files:
+        return jsonify({"status": "error", "msg": "No image uploaded"})
 
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "msg": str(e)
-        })
+    file = request.files['image']
+
+    return jsonify({
+        "status": "success",
+        "msg": "image received",
+        "filename": file.filename
+    })
