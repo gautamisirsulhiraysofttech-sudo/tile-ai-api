@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
-import cv2
-import numpy as np
+import time
 
 app = Flask(__name__)
 
@@ -10,6 +9,19 @@ def home():
 
 @app.route('/detect', methods=['POST'])
 def detect():
-    file = request.files['image']
-    return jsonify({"msg": "ok"})
+    try:
+        file = request.files['image']
+        
+        # simulate processing delay safe
+        time.sleep(1)
 
+        return jsonify({
+            "status": "success",
+            "msg": "image received"
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "msg": str(e)
+        })
